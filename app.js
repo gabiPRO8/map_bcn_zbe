@@ -32,10 +32,8 @@ let locationWatchId = null;
 let locationTrackingActive = false;
 let lastKnownLocation = null;
 let liveOriginEnabled = true;
-let sidebarOpen = true;
 let mobileLayout = false;
 let firstLocationFix = false;
-let trafficLayerEnabled = false;
 let destinationSearchTimer = null;
 const LAST_LOCATION_KEY = "bcnNavigatorLastLocation";
 
@@ -56,9 +54,6 @@ const els = {
 
   locationStatus: document.getElementById("locationStatus"),
   sidebar: document.getElementById("sidebar"),
-  panelToggleBtn: document.getElementById("panelToggleBtn"),
-  swapRouteBtn: document.getElementById("swapRouteBtn"),
-  trafficToggleBtn: document.getElementById("trafficToggleBtn"),
 
   myLocationBtn: document.getElementById("myLocationBtn"),
   loadingOverlay: document.getElementById("loadingOverlay"),
@@ -94,7 +89,9 @@ function initMap() {
         "Mapa normal": normalLayer,
         "Mapa transporte": transportLayer,
       },
-      {},
+      {
+        "Camaras ZBE": zbeLayerGroup,
+      },
       { collapsed: false, position: "topright" }
     )
     .addTo(map);
@@ -103,8 +100,6 @@ function initMap() {
   transportLayer.on("tileerror", () => {
     console.warn("La capa de transporte no cargo correctamente.");
   });
-
-  updateTrafficButton();
 }
 
 function setLoading(isLoading, text = "Cargando...") {
@@ -120,14 +115,6 @@ function updateLocationStatus(text) {
   if (els.locationStatus) {
     els.locationStatus.textContent = text;
   }
-}
-
-function updateTrafficButton() {
-  if (!els.trafficToggleBtn) {
-    return;
-  }
-
-  els.trafficToggleBtn.textContent = trafficLayerEnabled ? "Mapa" : "Tráfico";
 }
 
 function normalizeText(value) {
@@ -176,30 +163,6 @@ function renderDestinationSuggestions(results) {
   });
 }
 
-function setTrafficLayer(enabled) {
-  trafficLayerEnabled = enabled;
-
-  if (map) {
-    if (enabled) {
-      if (map.hasLayer(normalLayer)) {
-        map.removeLayer(normalLayer);
-      }
-      if (!map.hasLayer(transportLayer)) {
-        transportLayer.addTo(map);
-      }
-    } else {
-      if (map.hasLayer(transportLayer)) {
-        map.removeLayer(transportLayer);
-      }
-      if (!map.hasLayer(normalLayer)) {
-        normalLayer.addTo(map);
-      }
-    }
-  }
-
-  updateTrafficButton();
-}
-
 function syncOriginDisplay(point) {
   if (!els.originInput) {
     return;
@@ -213,30 +176,9 @@ function syncOriginDisplay(point) {
   els.originInput.value = point.name || `${point.lat.toFixed(6)}, ${point.lng.toFixed(6)}`;
 }
 
-function setSidebarOpen(open) {
-  sidebarOpen = open;
-  els.sidebar.classList.toggle("sidebar-open", open);
-
-  if (els.panelToggleBtn) {
-    els.panelToggleBtn.textContent = open ? "Cerrar panel" : "Abrir panel";
-  }
-
-  window.setTimeout(() => {
-    if (map) {
-      map.invalidateSize();
-    }
-  }, 320);
-}
-
 function syncMobileLayout() {
   mobileLayout = mobileQuery.matches;
   document.body.classList.toggle("mobile-layout", mobileLayout);
-
-  if (mobileLayout) {
-    setSidebarOpen(sidebarOpen);
-  } else {
-    setSidebarOpen(true);
-  }
 }
 
 function createDivIcon(className, html = "") {
@@ -834,46 +776,10 @@ async function startLiveLocationTracking(notifyUser = true) {
   }
 }
 
-function toggleLiveLocationTracking() {
-  if (locationTrackingActive) {
-    stopLiveLocationTracking();
-    return;
-  }
-
-  startLiveLocationTracking();
-}
-
 function focusCurrentLocation() {
   liveOriginEnabled = true;
 
   startLiveLocationTracking(true);
-}
-
-function swapRoutePoints() {
-  if (!originPoint || !destinationPoint) {
-    alert("Primero define destino y ubicación actual");
-    return;
-  }
-
-  const swappedOrigin = destinationPoint;
-  const swappedDestination = originPoint;
-
-  originPoint = swappedOrigin;
-  destinationPoint = swappedDestination;
-
-  liveOriginEnabled = false;
-
-  syncOriginDisplay(originPoint);
-  els.destinationInput.value = destinationPoint.name || "";
-
-  placeRoutePointMarker("origin", originPoint);
-  placeRoutePointMarker("destination", destinationPoint);
-
-  updateLocationStatus("Ruta invertida: el origen ahora es el destino anterior");
-}
-
-async function autoStartLiveLocationIfAllowed() {
-  return;
 }
 
 function getRouteRanking() {
@@ -1102,17 +1008,6 @@ async function executeSearch(inputEl, listEl, onSelect) {
   } finally {
     setLoading(false);
   }
-}
-
-function attachSearchEvents(inputEl, buttonEl, listEl, selectHandler) {
-  buttonEl.addEventListener("click", () => executeSearch(inputEl, listEl, selectHandler));
-
-  inputEl.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      executeSearch(inputEl, listEl, selectHandler);
-    }
-  });
 }
 
 function parseKmlCoordinates(text) {
