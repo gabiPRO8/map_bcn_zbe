@@ -37,6 +37,7 @@ let mobileLayout = false;
 let firstLocationFix = false;
 let trafficLayerEnabled = false;
 let destinationSearchTimer = null;
+const LAST_LOCATION_KEY = "bcnNavigatorLastLocation";
 
 let normalLayer;
 let transportLayer;
@@ -657,6 +658,40 @@ function stopLiveLocationTracking() {
   updateLocationStatus("Ubicación en vivo: desactivada");
 }
 
+function cacheLastKnownLocation(location) {
+  try {
+    localStorage.setItem(LAST_LOCATION_KEY, JSON.stringify(location));
+  } catch (error) {
+    console.warn("No se pudo guardar la ubicacion en cache", error);
+  }
+}
+
+function restoreCachedLocation() {
+  try {
+    const raw = localStorage.getItem(LAST_LOCATION_KEY);
+    if (!raw) {
+      return;
+    }
+
+    const parsed = JSON.parse(raw);
+    if (!Number.isFinite(parsed?.lat) || !Number.isFinite(parsed?.lng)) {
+      return;
+    }
+
+    updateLiveLocation({
+      coords: {
+        latitude: parsed.lat,
+        longitude: parsed.lng,
+        accuracy: Number.isFinite(parsed.accuracy) ? parsed.accuracy : 120,
+      },
+    });
+
+    updateLocationStatus("Ubicacion aproximada cargada. Actualizando GPS...");
+  } catch (error) {
+    console.warn("No se pudo restaurar la ubicacion cacheada", error);
+  }
+}
+
 function getCurrentPosition(options = {}) {
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(resolve, reject, {
@@ -668,6 +703,26 @@ function getCurrentPosition(options = {}) {
   });
 }
 
+async function resolveInitialPosition() {
+  try {
+    return await getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 22000,
+      maximumAge: 0,
+    });
+  } catch (error) {
+    if (error?.code === 2 || error?.code === 3) {
+      return getCurrentPosition({
+        enableHighAccuracy: false,
+        timeout: 22000,
+        maximumAge: 120000,
+      });
+    }
+
+    throw error;
+  }
+}
+
 function updateLiveLocation(position) {
   const { latitude, longitude, accuracy } = position.coords;
 
@@ -676,6 +731,8 @@ function updateLiveLocation(position) {
     lng: longitude,
     accuracy,
   };
+
+  cacheLastKnownLocation(lastKnownLocation);
 
   if (liveOriginEnabled) {
     originPoint = {
@@ -728,7 +785,7 @@ async function startLiveLocationTracking(notifyUser = true) {
   setLoading(true, "Obteniendo ubicación...");
 
   try {
-    const firstFix = await getCurrentPosition({ timeout: 30000, maximumAge: 0 });
+    const firstFix = await resolveInitialPosition();
     updateLiveLocation(firstFix);
 
     locationWatchId = navigator.geolocation.watchPosition(
@@ -739,13 +796,19 @@ async function startLiveLocationTracking(notifyUser = true) {
       (error) => {
         console.error(error);
         setLoading(false);
-        stopLiveLocationTracking();
-        updateLocationStatus("Ubicación en vivo: no disponible");
+
+        if (error?.code === 1) {
+          stopLiveLocationTracking();
+          updateLocationStatus("Ubicación bloqueada. Pulsa 📍 para reintentar");
+          return;
+        }
+
+        updateLocationStatus("Señal GPS débil. Reintentando...");
       },
       {
         enableHighAccuracy: true,
-        timeout: 30000,
-        maximumAge: 10000,
+        timeout: 22000,
+        maximumAge: 12000,
       }
     );
 
@@ -1108,6 +1171,12 @@ function applyKmlContent(xmlText) {
       lat: first.lat,
       lng: first.lng,
     });
+
+    L.marker([first.lat, first.lng], {
+      icon: createDivIcon("camera-marker", "📷"),
+    })
+      .addTo(zbeLayerGroup)
+      .bindPopup(`<strong>${cameraName}</strong><br/>${first.lat.toFixed(6)}, ${first.lng.toFixed(6)}`);
   });
 
   updateZbeCounter();
@@ -1195,5 +1264,6 @@ function bindEvents() {
 initMap();
 syncMobileLayout();
 bindEvents();
+restoreCachedLocation();
 preloadDefaultKml();
 startLiveLocationTracking(false);
