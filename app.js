@@ -2,6 +2,20 @@ const BARCELONA_CENTER = [41.3874, 2.1686];
 const BARCELONA_VIEWBOX = "2.0522,41.2971,2.2285,41.4696";
 const ROUTE_COLORS = ["#4A90E2", "#27AE60", "#E67E22", "#9B59B6"];
 const DEFAULT_KML_FILE = "Mapa de Cámaras ZBE Barcelona 2025.kml";
+const BARCELONA_DESTINATION_SUGGESTIONS = [
+  { display_name: "Plaça de Catalunya, Barcelona", lat: 41.387018, lon: 2.170047 },
+  { display_name: "Plaça d'Espanya, Barcelona", lat: 41.374997, lon: 2.149722 },
+  { display_name: "Plaça de Sants, Barcelona", lat: 41.3753, lon: 2.1365 },
+  { display_name: "Plaça de Lesseps, Barcelona", lat: 41.4056, lon: 2.1454 },
+  { display_name: "Plaça del Sol, Barcelona", lat: 41.4034, lon: 2.1545 },
+  { display_name: "Plaça de la Vila de Gràcia, Barcelona", lat: 41.4032, lon: 2.1571 },
+  { display_name: "Plaça Universitat, Barcelona", lat: 41.3853, lon: 2.1633 },
+  { display_name: "Plaça de Sant Jaume, Barcelona", lat: 41.3825, lon: 2.1773 },
+  { display_name: "Plaça de la Virreina, Barcelona", lat: 41.4039, lon: 2.1558 },
+  { display_name: "Plaça de Francesc Macià, Barcelona", lat: 41.3921, lon: 2.1453 },
+  { display_name: "Plaça de les Glòries Catalanes, Barcelona", lat: 41.4063, lon: 2.1880 },
+  { display_name: "Plaça de la Mercè, Barcelona", lat: 41.3809, lon: 2.1774 },
+];
 
 const zbeCameras = [];
 window.zbeCameras = zbeCameras;
@@ -22,6 +36,7 @@ let sidebarOpen = true;
 let mobileLayout = false;
 let firstLocationFix = false;
 let trafficLayerEnabled = false;
+let destinationSearchTimer = null;
 
 let normalLayer;
 let transportLayer;
@@ -32,6 +47,7 @@ const els = {
   destinationInput: document.getElementById("destinationInput"),
   destinationSearchBtn: document.getElementById("destinationSearchBtn"),
   destinationResults: document.getElementById("destinationResults"),
+  legalLinks: document.getElementById("legalLinks"),
 
   calculateRoutesBtn: document.getElementById("calculateRoutesBtn"),
   clearRoutesBtn: document.getElementById("clearRoutesBtn"),
@@ -101,6 +117,52 @@ function updateTrafficButton() {
   }
 
   els.trafficToggleBtn.textContent = trafficLayerEnabled ? "Mapa" : "Tráfico";
+}
+
+function normalizeText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function dedupeSuggestions(items) {
+  const seen = new Set();
+  return items.filter((item) => {
+    const key = normalizeText(item.display_name);
+    if (seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    return true;
+  });
+}
+
+function filterLocalDestinationSuggestions(query) {
+  const normalizedQuery = normalizeText(query);
+
+  if (normalizedQuery.length < 2) {
+    return [];
+  }
+
+  return BARCELONA_DESTINATION_SUGGESTIONS.filter((item) => {
+    const normalizedName = normalizeText(item.display_name);
+    return normalizedName.includes(normalizedQuery) || normalizedName.split(",")[0].startsWith(normalizedQuery);
+  }).slice(0, 6);
+}
+
+function renderDestinationSuggestions(results) {
+  showResults(els.destinationResults, results, (item) => {
+    destinationPoint = {
+      name: item.display_name,
+      lat: Number(item.lat),
+      lng: Number(item.lon),
+    };
+
+    els.destinationInput.value = item.display_name;
+    hideResults(els.destinationResults);
+    placeRoutePointMarker("destination", destinationPoint);
+  });
 }
 
 function setTrafficLayer(enabled) {
@@ -503,30 +565,50 @@ async function searchNominatim(query) {
   return response.json();
 }
 
-function updateSelectedPlaceInfo(item) {
-  els.selectedName.textContent = item.display_name || "-";
-  els.selectedLat.textContent = Number(item.lat).toFixed(6);
-  els.selectedLng.textContent = Number(item.lon).toFixed(6);
-  els.selectedType.textContent = item.type || item.class || "-";
-}
+async function getDestinationSuggestions(query) {
+  const trimmed = query.trim();
 
-function placeSearchMarker(item) {
-  const lat = Number(item.lat);
-  const lng = Number(item.lon);
-
-  if (placeMarker) {
-    map.removeLayer(placeMarker);
+  if (!trimmed) {
+    return [];
   }
 
-  placeMarker = L.marker([lat, lng], {
-    icon: createDivIcon("blue-marker"),
-  })
-    .addTo(map)
-    .bindPopup(`<strong>${item.display_name}</strong><br/>${lat.toFixed(6)}, ${lng.toFixed(6)}`)
-    .openPopup();
+  const localMatches = filterLocalDestinationSuggestions(trimmed);
+  let remoteMatches = [];
 
-  map.setView([lat, lng], 16);
-  updateSelectedPlaceInfo(item);
+  try {
+    remoteMatches = await searchNominatim(trimmed);
+  } catch (error) {
+    console.warn("No se pudo consultar Nominatim para sugerencias", error);
+  }
+
+  const combined = dedupeSuggestions([...localMatches, ...remoteMatches]);
+  return combined.slice(0, 8);
+}
+
+async function updateDestinationAutocomplete() {
+  const query = els.destinationInput.value.trim();
+
+  if (!query) {
+    hideResults(els.destinationResults);
+    return;
+  }
+
+  if (destinationSearchTimer) {
+    window.clearTimeout(destinationSearchTimer);
+  }
+
+  destinationSearchTimer = window.setTimeout(async () => {
+    try {
+      setLoading(true, "Buscando destinos...");
+      const results = await getDestinationSuggestions(query);
+      renderDestinationSuggestions(results);
+    } catch (error) {
+      console.error(error);
+      alert("No se pudo completar la busqueda");
+    } finally {
+      setLoading(false);
+    }
+  }, 220);
 }
 
 function placeRoutePointMarker(type, point) {
@@ -1058,16 +1140,37 @@ async function preloadDefaultKml() {
 }
 
 function bindEvents() {
-  attachSearchEvents(els.destinationInput, els.destinationSearchBtn, els.destinationResults, (item) => {
-    destinationPoint = {
-      name: item.display_name,
-      lat: Number(item.lat),
-      lng: Number(item.lon),
-    };
+  els.destinationInput.addEventListener("input", updateDestinationAutocomplete);
 
-    els.destinationInput.value = item.display_name;
-    hideResults(els.destinationResults);
-    placeRoutePointMarker("destination", destinationPoint);
+  els.destinationSearchBtn.addEventListener("click", () => {
+    executeSearch(els.destinationInput, els.destinationResults, (item) => {
+      destinationPoint = {
+        name: item.display_name,
+        lat: Number(item.lat),
+        lng: Number(item.lon),
+      };
+
+      els.destinationInput.value = item.display_name;
+      hideResults(els.destinationResults);
+      placeRoutePointMarker("destination", destinationPoint);
+    });
+  });
+
+  els.destinationInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      executeSearch(els.destinationInput, els.destinationResults, (item) => {
+        destinationPoint = {
+          name: item.display_name,
+          lat: Number(item.lat),
+          lng: Number(item.lon),
+        };
+
+        els.destinationInput.value = item.display_name;
+        hideResults(els.destinationResults);
+        placeRoutePointMarker("destination", destinationPoint);
+      });
+    }
   });
 
   document.addEventListener("click", (event) => {

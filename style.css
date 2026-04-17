@@ -291,6 +291,31 @@ input[type="text"]:focus {
   height: 100%;
 }
 
+.legal-footer {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 1100;
+  display: flex;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(10, 14, 25, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.legal-footer a {
+  color: #dbeafe;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.legal-footer a:hover {
+  text-decoration: underline;
+}
+
 .routes-list {
   display: grid;
   gap: 8px;
@@ -505,6 +530,15 @@ input[type="text"]:focus {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .legal-footer {
+    left: 12px;
+    bottom: 12px;
+    right: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    border-radius: 18px;
   }
 
   .panel-header h1 {

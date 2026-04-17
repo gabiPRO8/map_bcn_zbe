@@ -22,6 +22,25 @@ Si PowerShell muestra `npm no se reconoce`, cierra y vuelve a abrir la terminal 
 - El botón `Mi ubicación` activa seguimiento continuo de tu posición.
 - La geolocalización solo funciona en contextos seguros, como GitHub Pages con `https`.
 
+## Páginas legales
+
+- `privacidad.html`
+- `terminos.html`
+- `contacto.html`
+
+## Autocompletado
+
+El buscador de destino muestra sugerencias mientras escribes. Por ejemplo, al teclear `pla` aparecen plazas conocidas de Barcelona además de resultados online.
+
+## Para AdSense
+
+Tener estas páginas ayuda, pero normalmente también conviene:
+
+- Añadir contenido original suficiente y navegación clara.
+- Tener una página de contacto real con tu correo o formulario.
+- Configurar aviso y consentimiento de cookies si muestras anuncios en la UE.
+- Revisar que el sitio no tenga contenido prohibido, enlaces rotos ni páginas vacías.
+
 El servicio quedara en:
 
 - http://localhost:5173
