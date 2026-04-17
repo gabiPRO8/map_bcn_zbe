@@ -18,7 +18,7 @@
     <aside id="sidebar" class="custom-scrollbar">
       <div class="panel-header">
         <h1>🗺 BCN Navigator</h1>
-        <p>Mapa urbano de Barcelona con rutas y control ZBE</p>
+        <p>Rutas rápidas en Barcelona</p>
         <div id="locationStatus" class="location-status">Ubicación en vivo: desactivada</div>
       </div>
 
@@ -28,75 +28,30 @@
       </div>
 
       <details class="panel-section" open>
-        <summary>Buscar lugar</summary>
+        <summary>Ruta</summary>
         <div class="section-content">
           <div class="input-row">
-            <input id="placeInput" type="text" placeholder="Buscar lugar en Barcelona..." />
-            <button id="placeSearchBtn" class="btn btn-primary">Buscar</button>
+            <input id="originInput" type="text" value="Tu ubicación actual" readonly />
+            <button id="myLocationBtn" class="btn btn-secondary btn-icon" type="button">📍</button>
           </div>
-          <ul id="placeResults" class="results-list hidden"></ul>
 
-          <div class="info-box" id="placeInfo">
-            <h3>Lugar seleccionado</h3>
-            <p><strong>Nombre:</strong> <span id="selectedName">-</span></p>
-            <p><strong>Lat:</strong> <span id="selectedLat">-</span></p>
-            <p><strong>Lng:</strong> <span id="selectedLng">-</span></p>
-            <p><strong>Tipo:</strong> <span id="selectedType">-</span></p>
-            <hr />
-            <p><strong>Click en mapa:</strong> <span id="mapClickCoords">-</span></p>
-          </div>
-        </div>
-      </details>
-
-      <details class="panel-section" open>
-        <summary>Calcular ruta</summary>
-        <div class="section-content">
-          <div class="input-column">
-            <label for="originInput">Origen</label>
-            <div class="input-row">
-              <input id="originInput" type="text" placeholder="Buscar origen..." />
-              <button id="originSearchBtn" class="btn btn-secondary">Buscar</button>
-            </div>
-            <ul id="originResults" class="results-list hidden"></ul>
-          </div>
+          <button id="swapRouteBtn" class="swap-btn" type="button">⇅ Intercambiar ruta</button>
 
           <div class="input-column">
             <label for="destinationInput">Destino</label>
             <div class="input-row">
               <input id="destinationInput" type="text" placeholder="Buscar destino..." />
-              <button id="destinationSearchBtn" class="btn btn-secondary">Buscar</button>
+              <button id="destinationSearchBtn" class="btn btn-primary">Buscar</button>
             </div>
             <ul id="destinationResults" class="results-list hidden"></ul>
           </div>
 
           <div class="button-stack">
-            <button id="myLocationBtn" class="btn btn-secondary">📍 Mi ubicación</button>
-            <button id="calculateRoutesBtn" class="btn btn-primary btn-wide">CALCULAR RUTAS</button>
-            <button id="clearRoutesBtn" class="btn btn-ghost">Limpiar rutas</button>
+            <button id="calculateRoutesBtn" class="btn btn-primary btn-wide">Calcular ruta</button>
+            <button id="clearRoutesBtn" class="btn btn-ghost">Limpiar ruta</button>
           </div>
 
           <div id="routesList" class="routes-list"></div>
-        </div>
-      </details>
-
-      <details class="panel-section" open>
-        <summary>Capas y opciones</summary>
-        <div class="section-content">
-          <label class="toggle-row">
-            <input id="avoidZbeCheckbox" type="checkbox" />
-            <span>🚫 Evitar cámaras ZBE</span>
-          </label>
-
-          <label class="toggle-row">
-            <input id="toggleZbeLayer" type="checkbox" checked />
-            <span>Mostrar radares ZBE</span>
-          </label>
-
-          <button id="loadKmlBtn" class="btn btn-secondary btn-wide">📂 Cargar KML radares ZBE</button>
-          <input id="kmlFileInput" type="file" accept=".kml" class="hidden-input" />
-
-          <p class="counter" id="zbeCounter">0 radares ZBE cargados</p>
-          <p class="hint">Usa el control de capas del mapa para alternar entre Mapa normal y Mapa transporte.</p>
         </div>
       </details>
     </aside>
@@ -106,6 +61,7 @@
     </main>
 
     <button id="panelToggleBtn" class="panel-toggle-btn" type="button">Abrir panel</button>
+    <button id="trafficToggleBtn" class="traffic-toggle-btn" type="button">Tráfico</button>
   </div>
 
   <script

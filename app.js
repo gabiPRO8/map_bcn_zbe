@@ -7,7 +7,6 @@ const zbeCameras = [];
 window.zbeCameras = zbeCameras;
 
 let map;
-let placeMarker = null;
 let originMarker = null;
 let destinationMarker = null;
 let myLocationMarker = null;
@@ -18,28 +17,18 @@ let activeRouteId = null;
 let locationWatchId = null;
 let locationTrackingActive = false;
 let lastKnownLocation = null;
+let liveOriginEnabled = true;
 let sidebarOpen = true;
 let mobileLayout = false;
 let firstLocationFix = false;
+let trafficLayerEnabled = false;
 
 let normalLayer;
 let transportLayer;
 let zbeLayerGroup;
 
 const els = {
-  placeInput: document.getElementById("placeInput"),
-  placeSearchBtn: document.getElementById("placeSearchBtn"),
-  placeResults: document.getElementById("placeResults"),
-  selectedName: document.getElementById("selectedName"),
-  selectedLat: document.getElementById("selectedLat"),
-  selectedLng: document.getElementById("selectedLng"),
-  selectedType: document.getElementById("selectedType"),
-  mapClickCoords: document.getElementById("mapClickCoords"),
-
   originInput: document.getElementById("originInput"),
-  originSearchBtn: document.getElementById("originSearchBtn"),
-  originResults: document.getElementById("originResults"),
-
   destinationInput: document.getElementById("destinationInput"),
   destinationSearchBtn: document.getElementById("destinationSearchBtn"),
   destinationResults: document.getElementById("destinationResults"),
@@ -48,14 +37,11 @@ const els = {
   clearRoutesBtn: document.getElementById("clearRoutesBtn"),
   routesList: document.getElementById("routesList"),
 
-  avoidZbeCheckbox: document.getElementById("avoidZbeCheckbox"),
-  toggleZbeLayer: document.getElementById("toggleZbeLayer"),
-  loadKmlBtn: document.getElementById("loadKmlBtn"),
-  kmlFileInput: document.getElementById("kmlFileInput"),
-  zbeCounter: document.getElementById("zbeCounter"),
   locationStatus: document.getElementById("locationStatus"),
   sidebar: document.getElementById("sidebar"),
   panelToggleBtn: document.getElementById("panelToggleBtn"),
+  swapRouteBtn: document.getElementById("swapRouteBtn"),
+  trafficToggleBtn: document.getElementById("trafficToggleBtn"),
 
   myLocationBtn: document.getElementById("myLocationBtn"),
   loadingOverlay: document.getElementById("loadingOverlay"),
@@ -85,30 +71,13 @@ function initMap() {
   normalLayer.addTo(map);
 
   zbeLayerGroup = L.layerGroup().addTo(map);
-
-  L.control
-    .layers(
-      {
-        "Mapa normal": normalLayer,
-        "Mapa transporte": transportLayer,
-      },
-      {
-        "Radares ZBE": zbeLayerGroup,
-      },
-      { collapsed: false }
-    )
-    .addTo(map);
-
   L.control.scale({ imperial: false }).addTo(map);
-
-  map.on("click", (e) => {
-    const { lat, lng } = e.latlng;
-    els.mapClickCoords.textContent = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-  });
 
   transportLayer.on("tileerror", () => {
     console.warn("La capa de transporte no cargo correctamente.");
   });
+
+  updateTrafficButton();
 }
 
 function setLoading(isLoading, text = "Cargando...") {
@@ -124,6 +93,51 @@ function updateLocationStatus(text) {
   if (els.locationStatus) {
     els.locationStatus.textContent = text;
   }
+}
+
+function updateTrafficButton() {
+  if (!els.trafficToggleBtn) {
+    return;
+  }
+
+  els.trafficToggleBtn.textContent = trafficLayerEnabled ? "Mapa" : "Tráfico";
+}
+
+function setTrafficLayer(enabled) {
+  trafficLayerEnabled = enabled;
+
+  if (map) {
+    if (enabled) {
+      if (map.hasLayer(normalLayer)) {
+        map.removeLayer(normalLayer);
+      }
+      if (!map.hasLayer(transportLayer)) {
+        transportLayer.addTo(map);
+      }
+    } else {
+      if (map.hasLayer(transportLayer)) {
+        map.removeLayer(transportLayer);
+      }
+      if (!map.hasLayer(normalLayer)) {
+        normalLayer.addTo(map);
+      }
+    }
+  }
+
+  updateTrafficButton();
+}
+
+function syncOriginDisplay(point) {
+  if (!els.originInput) {
+    return;
+  }
+
+  if (!point) {
+    els.originInput.value = "Tu ubicación actual";
+    return;
+  }
+
+  els.originInput.value = point.name || `${point.lat.toFixed(6)}, ${point.lng.toFixed(6)}`;
 }
 
 function setSidebarOpen(open) {
@@ -386,7 +400,7 @@ async function buildRouteWithZbeAvoidance(origin, destination) {
 
   let candidateRoutes = directRoutes;
 
-  if (els.avoidZbeCheckbox.checked && zbeCameras.length) {
+  if (zbeCameras.length) {
     try {
       const corridorSource = directRoutes[0];
       const nearbyCameras = corridorSource
@@ -421,8 +435,7 @@ async function buildRouteWithZbeAvoidance(origin, destination) {
     };
   });
 
-  const ranked = els.avoidZbeCheckbox.checked ? rankRoutesByZbe(evaluated) : evaluated;
-  return ranked.slice(0, 4);
+  return rankRoutesByZbe(evaluated).slice(0, 4);
 }
 
 function checkRouteZBE(routeCoordinates) {
@@ -549,10 +562,6 @@ function stopLiveLocationTracking() {
   locationTrackingActive = false;
   firstLocationFix = false;
 
-  if (els.myLocationBtn) {
-    els.myLocationBtn.textContent = "📍 Mi ubicación";
-  }
-
   updateLocationStatus("Ubicación en vivo: desactivada");
 }
 
@@ -565,13 +574,15 @@ function updateLiveLocation(position) {
     accuracy,
   };
 
-  originPoint = {
-    name: "Mi ubicación actual",
-    lat: latitude,
-    lng: longitude,
-  };
+  if (liveOriginEnabled) {
+    originPoint = {
+      name: "Mi ubicación actual",
+      lat: latitude,
+      lng: longitude,
+    };
 
-  els.originInput.value = "Mi ubicación actual";
+    syncOriginDisplay(originPoint);
+  }
 
   if (myLocationMarker) {
     myLocationMarker.setLatLng([latitude, longitude]);
@@ -583,7 +594,7 @@ function updateLiveLocation(position) {
 
   myLocationMarker.bindPopup("Tu ubicación actual");
 
-  if (originMarker) {
+  if (liveOriginEnabled && originMarker) {
     map.removeLayer(originMarker);
     originMarker = null;
   }
@@ -609,10 +620,6 @@ function startLiveLocationTracking() {
   }
 
   locationTrackingActive = true;
-
-  if (els.myLocationBtn) {
-    els.myLocationBtn.textContent = "⏸ Parar ubicación";
-  }
 
   updateLocationStatus("Ubicación en vivo: buscando señal...");
   setLoading(true, "Obteniendo ubicación...");
@@ -645,6 +652,48 @@ function toggleLiveLocationTracking() {
   startLiveLocationTracking();
 }
 
+function focusCurrentLocation() {
+  liveOriginEnabled = true;
+
+  if (lastKnownLocation) {
+    originPoint = {
+      name: "Mi ubicación actual",
+      lat: lastKnownLocation.lat,
+      lng: lastKnownLocation.lng,
+    };
+
+    syncOriginDisplay(originPoint);
+    map.setView([lastKnownLocation.lat, lastKnownLocation.lng], mobileLayout ? 16 : 15);
+  }
+
+  if (!locationTrackingActive) {
+    startLiveLocationTracking();
+  }
+}
+
+function swapRoutePoints() {
+  if (!originPoint || !destinationPoint) {
+    alert("Primero define destino y ubicación actual");
+    return;
+  }
+
+  const swappedOrigin = destinationPoint;
+  const swappedDestination = originPoint;
+
+  originPoint = swappedOrigin;
+  destinationPoint = swappedDestination;
+
+  liveOriginEnabled = false;
+
+  syncOriginDisplay(originPoint);
+  els.destinationInput.value = destinationPoint.name || "";
+
+  placeRoutePointMarker("origin", originPoint);
+  placeRoutePointMarker("destination", destinationPoint);
+
+  updateLocationStatus("Ruta invertida: el origen ahora es el destino anterior");
+}
+
 async function autoStartLiveLocationIfAllowed() {
   if (!navigator.permissions?.query || !navigator.geolocation) {
     return;
@@ -661,13 +710,17 @@ async function autoStartLiveLocationIfAllowed() {
 }
 
 function getRouteRanking() {
-  const data = [...routesData];
+  return [...routesData].sort((a, b) => {
+    if (a.camerasCount !== b.camerasCount) {
+      return a.camerasCount - b.camerasCount;
+    }
 
-  if (els.avoidZbeCheckbox.checked) {
-    data.sort((a, b) => Number(a.passesZBE) - Number(b.passesZBE));
-  }
+    if (a.durationMin !== b.durationMin) {
+      return a.durationMin - b.durationMin;
+    }
 
-  return data;
+    return a.distanceKm - b.distanceKm;
+  });
 }
 
 function renderRoutesPanel() {
@@ -688,18 +741,13 @@ function renderRoutesPanel() {
       card.classList.add("active");
     }
 
-    const zbeText = route.passesZBE ? "⚠ Pasa por ZBE" : "✓ Evita ZBE";
-    const zbeClass = route.passesZBE ? "badge badge-risk" : "badge badge-safe";
-
     card.innerHTML = `
       <div class="route-title">
         <span>Ruta ${index + 1}</span>
-        <span class="${zbeClass}">${zbeText}</span>
       </div>
       <div class="route-meta">
         <span>${formatDistance(route.distanceKm)}</span>
         <span>${formatDuration(route.durationMin)}</span>
-        <span>${route.camerasCount || 0} cam</span>
       </div>
     `;
 
@@ -780,7 +828,19 @@ async function calculateRoutes() {
   try {
     setLoading(true, "Calculando rutas...");
 
-    const origin = await ensurePointFromInput(els.originInput, originPoint, els.originResults, "origin");
+    if (!originPoint) {
+      if (lastKnownLocation) {
+        originPoint = {
+          name: "Mi ubicación actual",
+          lat: lastKnownLocation.lat,
+          lng: lastKnownLocation.lng,
+        };
+      } else {
+        throw new Error("No se pudo fijar tu ubicación actual");
+      }
+    }
+
+    const origin = originPoint;
     const destination = await ensurePointFromInput(
       els.destinationInput,
       destinationPoint,
@@ -834,6 +894,10 @@ async function calculateRoutes() {
 
     if (mapBounds.length) {
       map.fitBounds(mapBounds, { padding: [30, 30] });
+    }
+
+    if (mobileLayout) {
+      setSidebarOpen(true);
     }
   } catch (error) {
     console.error(error);
@@ -890,7 +954,9 @@ function clearZbeData() {
 }
 
 function updateZbeCounter() {
-  els.zbeCounter.textContent = `${zbeCameras.length} radares ZBE cargados`;
+  if (els.zbeCounter) {
+    els.zbeCounter.textContent = `${zbeCameras.length} radares ZBE cargados`;
+  }
 }
 
 function applyKmlContent(xmlText) {
@@ -944,7 +1010,7 @@ function applyKmlContent(xmlText) {
 
   if (routesData.length) {
     const ranked = getRouteRanking();
-    if (els.avoidZbeCheckbox.checked && ranked.length) {
+    if (ranked.length) {
       activeRouteId = ranked[0].id;
       setActiveRoute(activeRouteId);
     } else {
@@ -992,23 +1058,6 @@ async function preloadDefaultKml() {
 }
 
 function bindEvents() {
-  attachSearchEvents(els.placeInput, els.placeSearchBtn, els.placeResults, (item) => {
-    placeSearchMarker(item);
-    hideResults(els.placeResults);
-  });
-
-  attachSearchEvents(els.originInput, els.originSearchBtn, els.originResults, (item) => {
-    originPoint = {
-      name: item.display_name,
-      lat: Number(item.lat),
-      lng: Number(item.lon),
-    };
-
-    els.originInput.value = item.display_name;
-    hideResults(els.originResults);
-    placeRoutePointMarker("origin", originPoint);
-  });
-
   attachSearchEvents(els.destinationInput, els.destinationSearchBtn, els.destinationResults, (item) => {
     destinationPoint = {
       name: item.display_name,
@@ -1022,19 +1071,10 @@ function bindEvents() {
   });
 
   document.addEventListener("click", (event) => {
-    const withinResults =
-      els.placeResults.contains(event.target) ||
-      els.originResults.contains(event.target) ||
-      els.destinationResults.contains(event.target);
-
-    const withinInputs =
-      els.placeInput.contains(event.target) ||
-      els.originInput.contains(event.target) ||
-      els.destinationInput.contains(event.target);
+    const withinResults = els.destinationResults.contains(event.target);
+    const withinInputs = els.originInput.contains(event.target) || els.destinationInput.contains(event.target);
 
     if (!withinResults && !withinInputs) {
-      hideResults(els.placeResults);
-      hideResults(els.originResults);
       hideResults(els.destinationResults);
     }
   });
@@ -1045,47 +1085,17 @@ function bindEvents() {
     clearRoutes();
   });
 
-  els.avoidZbeCheckbox.addEventListener("change", () => {
-    if (!routesData.length) {
-      return;
-    }
+  els.myLocationBtn.addEventListener("click", focusCurrentLocation);
 
-    const ranked = getRouteRanking();
-    if (els.avoidZbeCheckbox.checked && ranked.length) {
-      setActiveRoute(ranked[0].id);
-    } else {
-      renderRoutesPanel();
-    }
-  });
+  if (els.swapRouteBtn) {
+    els.swapRouteBtn.addEventListener("click", swapRoutePoints);
+  }
 
-  els.loadKmlBtn.addEventListener("click", () => {
-    els.kmlFileInput.click();
-  });
-
-  els.kmlFileInput.addEventListener("change", (event) => {
-    const file = event.target.files?.[0];
-    if (!file) {
-      return;
-    }
-
-    if (!file.name.toLowerCase().endsWith(".kml")) {
-      alert("Selecciona un archivo .kml valido");
-      return;
-    }
-
-    loadKmlFile(file);
-    event.target.value = "";
-  });
-
-  els.toggleZbeLayer.addEventListener("change", () => {
-    if (els.toggleZbeLayer.checked) {
-      zbeLayerGroup.addTo(map);
-    } else {
-      map.removeLayer(zbeLayerGroup);
-    }
-  });
-
-  els.myLocationBtn.addEventListener("click", toggleLiveLocationTracking);
+  if (els.trafficToggleBtn) {
+    els.trafficToggleBtn.addEventListener("click", () => {
+      setTrafficLayer(!trafficLayerEnabled);
+    });
+  }
 
   if (els.panelToggleBtn) {
     els.panelToggleBtn.addEventListener("click", () => {
@@ -1099,6 +1109,6 @@ function bindEvents() {
 initMap();
 syncMobileLayout();
 bindEvents();
-updateZbeCounter();
+updateTrafficButton();
 preloadDefaultKml();
 autoStartLiveLocationIfAllowed();
