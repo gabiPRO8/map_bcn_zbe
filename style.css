@@ -210,31 +210,6 @@ body {
   font-size: 0.8rem;
 }
 
-.legal-footer {
-  position: fixed;
-  left: 16px;
-  bottom: 16px;
-  z-index: 1100;
-  display: flex;
-  gap: 12px;
-  padding: 10px 12px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  background: rgba(10, 14, 25, 0.72);
-  backdrop-filter: blur(10px);
-}
-
-.legal-footer a {
-  color: #dbeafe;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 0.85rem;
-}
-
-.legal-footer a:hover {
-  text-decoration: underline;
-}
-
 .routes-list {
   display: grid;
   gap: 8px;
@@ -362,12 +337,31 @@ body {
   }
 
   .legal-footer {
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
+    display: none;
   }
+}
+
+.leaflet-control-layers {
+  border-radius: 16px !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  background: rgba(10, 14, 25, 0.82) !important;
+  color: #f8fafc !important;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
+}
+
+.leaflet-control-layers label,
+.leaflet-control-layers-list,
+.leaflet-control-layers-expanded {
+  color: #f8fafc !important;
+}
+
+.leaflet-control-layers-toggle {
+  background-color: transparent !important;
+}
+
+.leaflet-control-layers-expanded {
+  padding: 10px 12px !important;
 }
     padding: 12px 12px calc(16px + env(safe-area-inset-bottom));
     transform: translateY(calc(100% - 104px));

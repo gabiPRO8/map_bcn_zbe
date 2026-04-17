@@ -87,6 +87,16 @@ function initMap() {
   normalLayer.addTo(map);
 
   zbeLayerGroup = L.layerGroup().addTo(map);
+  L.control
+    .layers(
+      {
+        "Mapa normal": normalLayer,
+        "Mapa transporte": transportLayer,
+      },
+      {},
+      { collapsed: false, position: "topright" }
+    )
+    .addTo(map);
   L.control.scale({ imperial: false }).addTo(map);
 
   transportLayer.on("tileerror", () => {
@@ -954,6 +964,8 @@ async function calculateRoutes() {
       els.destinationResults,
       "destination"
     );
+
+      placeRoutePointMarker("destination", destination);
 
     const routed = await buildRouteWithZbeAvoidance(origin, destination);
     if (!routed.length) {
