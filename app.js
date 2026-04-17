@@ -647,6 +647,17 @@ function stopLiveLocationTracking() {
   updateLocationStatus("Ubicación en vivo: desactivada");
 }
 
+function getCurrentPosition(options = {}) {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject, {
+      enableHighAccuracy: true,
+      timeout: 25000,
+      maximumAge: 10000,
+      ...options,
+    });
+  });
+}
+
 function updateLiveLocation(position) {
   const { latitude, longitude, accuracy } = position.coords;
 
@@ -691,7 +702,7 @@ function updateLiveLocation(position) {
   updateLocationStatus(`Ubicación en vivo: ${latitude.toFixed(5)}, ${longitude.toFixed(5)} ±${Math.round(accuracy)} m`);
 }
 
-function startLiveLocationTracking() {
+async function startLiveLocationTracking(notifyUser = true) {
   if (!navigator.geolocation) {
     alert("Tu navegador no soporta geolocalizacion");
     return;
@@ -706,23 +717,48 @@ function startLiveLocationTracking() {
   updateLocationStatus("Ubicación en vivo: buscando señal...");
   setLoading(true, "Obteniendo ubicación...");
 
-  locationWatchId = navigator.geolocation.watchPosition(
-    (position) => {
-      updateLiveLocation(position);
-      setLoading(false);
-    },
-    (error) => {
-      console.error(error);
-      setLoading(false);
-      stopLiveLocationTracking();
-      alert("No se pudo obtener tu ubicación");
-    },
-    {
-      enableHighAccuracy: true,
-      timeout: 12000,
-      maximumAge: 0,
+  try {
+    const firstFix = await getCurrentPosition({ timeout: 30000, maximumAge: 0 });
+    updateLiveLocation(firstFix);
+
+    locationWatchId = navigator.geolocation.watchPosition(
+      (position) => {
+        updateLiveLocation(position);
+        setLoading(false);
+      },
+      (error) => {
+        console.error(error);
+        setLoading(false);
+        stopLiveLocationTracking();
+        updateLocationStatus("Ubicación en vivo: no disponible");
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 30000,
+        maximumAge: 10000,
+      }
+    );
+
+    setLoading(false);
+  } catch (error) {
+    console.error(error);
+    setLoading(false);
+    stopLiveLocationTracking();
+
+    const message =
+      error?.code === 1
+        ? "Activa la ubicación para usar tu posición actual"
+        : error?.code === 2
+          ? "No se pudo localizar tu posición en este momento"
+          : error?.code === 3
+            ? "La ubicación tardó demasiado en responder"
+            : "No se pudo obtener tu ubicación";
+
+    updateLocationStatus(`Ubicación en vivo: ${message}`);
+    if (notifyUser) {
+      alert(message);
     }
-  );
+  }
 }
 
 function toggleLiveLocationTracking() {
@@ -737,20 +773,7 @@ function toggleLiveLocationTracking() {
 function focusCurrentLocation() {
   liveOriginEnabled = true;
 
-  if (lastKnownLocation) {
-    originPoint = {
-      name: "Mi ubicación actual",
-      lat: lastKnownLocation.lat,
-      lng: lastKnownLocation.lng,
-    };
-
-    syncOriginDisplay(originPoint);
-    map.setView([lastKnownLocation.lat, lastKnownLocation.lng], mobileLayout ? 16 : 15);
-  }
-
-  if (!locationTrackingActive) {
-    startLiveLocationTracking();
-  }
+  startLiveLocationTracking(true);
 }
 
 function swapRoutePoints() {
@@ -777,18 +800,7 @@ function swapRoutePoints() {
 }
 
 async function autoStartLiveLocationIfAllowed() {
-  if (!navigator.permissions?.query || !navigator.geolocation) {
-    return;
-  }
-
-  try {
-    const permission = await navigator.permissions.query({ name: "geolocation" });
-    if (permission.state === "granted") {
-      startLiveLocationTracking();
-    }
-  } catch (error) {
-    console.warn("No se pudo comprobar permiso de geolocalizacion", error);
-  }
+  return;
 }
 
 function getRouteRanking() {
@@ -911,15 +923,28 @@ async function calculateRoutes() {
     setLoading(true, "Calculando rutas...");
 
     if (!originPoint) {
-      if (lastKnownLocation) {
-        originPoint = {
-          name: "Mi ubicación actual",
-          lat: lastKnownLocation.lat,
-          lng: lastKnownLocation.lng,
-        };
-      } else {
+      if (!lastKnownLocation) {
+        if (!locationTrackingActive) {
+          await startLiveLocationTracking(false);
+        }
+
+        if (!lastKnownLocation) {
+          const firstFix = await getCurrentPosition({ timeout: 30000, maximumAge: 0 });
+          updateLiveLocation(firstFix);
+        }
+      }
+
+      if (!lastKnownLocation) {
         throw new Error("No se pudo fijar tu ubicación actual");
       }
+
+      originPoint = {
+        name: "Mi ubicación actual",
+        lat: lastKnownLocation.lat,
+        lng: lastKnownLocation.lng,
+      };
+
+      syncOriginDisplay(originPoint);
     }
 
     const origin = originPoint;
@@ -976,10 +1001,6 @@ async function calculateRoutes() {
 
     if (mapBounds.length) {
       map.fitBounds(mapBounds, { padding: [30, 30] });
-    }
-
-    if (mobileLayout) {
-      setSidebarOpen(true);
     }
   } catch (error) {
     console.error(error);
@@ -1075,12 +1096,6 @@ function applyKmlContent(xmlText) {
       lat: first.lat,
       lng: first.lng,
     });
-
-    L.marker([first.lat, first.lng], {
-      icon: createDivIcon("camera-marker", "📷"),
-    })
-      .addTo(zbeLayerGroup)
-      .bindPopup(`<strong>${cameraName}</strong><br/>${first.lat.toFixed(6)}, ${first.lng.toFixed(6)}`);
   });
 
   updateZbeCounter();
@@ -1142,40 +1157,16 @@ async function preloadDefaultKml() {
 function bindEvents() {
   els.destinationInput.addEventListener("input", updateDestinationAutocomplete);
 
-  els.destinationSearchBtn.addEventListener("click", () => {
-    executeSearch(els.destinationInput, els.destinationResults, (item) => {
-      destinationPoint = {
-        name: item.display_name,
-        lat: Number(item.lat),
-        lng: Number(item.lon),
-      };
-
-      els.destinationInput.value = item.display_name;
-      hideResults(els.destinationResults);
-      placeRoutePointMarker("destination", destinationPoint);
-    });
-  });
-
   els.destinationInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      executeSearch(els.destinationInput, els.destinationResults, (item) => {
-        destinationPoint = {
-          name: item.display_name,
-          lat: Number(item.lat),
-          lng: Number(item.lon),
-        };
-
-        els.destinationInput.value = item.display_name;
-        hideResults(els.destinationResults);
-        placeRoutePointMarker("destination", destinationPoint);
-      });
+      calculateRoutes();
     }
   });
 
   document.addEventListener("click", (event) => {
     const withinResults = els.destinationResults.contains(event.target);
-    const withinInputs = els.originInput.contains(event.target) || els.destinationInput.contains(event.target);
+    const withinInputs = els.destinationInput.contains(event.target);
 
     if (!withinResults && !withinInputs) {
       hideResults(els.destinationResults);
@@ -1184,27 +1175,7 @@ function bindEvents() {
 
   els.calculateRoutesBtn.addEventListener("click", calculateRoutes);
 
-  els.clearRoutesBtn.addEventListener("click", () => {
-    clearRoutes();
-  });
-
   els.myLocationBtn.addEventListener("click", focusCurrentLocation);
-
-  if (els.swapRouteBtn) {
-    els.swapRouteBtn.addEventListener("click", swapRoutePoints);
-  }
-
-  if (els.trafficToggleBtn) {
-    els.trafficToggleBtn.addEventListener("click", () => {
-      setTrafficLayer(!trafficLayerEnabled);
-    });
-  }
-
-  if (els.panelToggleBtn) {
-    els.panelToggleBtn.addEventListener("click", () => {
-      setSidebarOpen(!sidebarOpen);
-    });
-  }
 
   mobileQuery.addEventListener("change", syncMobileLayout);
 }
@@ -1212,6 +1183,5 @@ function bindEvents() {
 initMap();
 syncMobileLayout();
 bindEvents();
-updateTrafficButton();
 preloadDefaultKml();
-autoStartLiveLocationIfAllowed();
+startLiveLocationTracking(false);

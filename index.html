@@ -15,11 +15,19 @@
 </head>
 <body>
   <div id="app">
-    <aside id="sidebar" class="custom-scrollbar">
-      <div class="panel-header">
-        <h1>🗺 BCN Navigator</h1>
-        <p>Rutas rápidas en Barcelona</p>
-        <div id="locationStatus" class="location-status">Ubicación en vivo: desactivada</div>
+    <header id="sidebar" class="custom-scrollbar topbar">
+      <div class="topbar-brand">
+        <span class="topbar-title">BCN Navigator</span>
+        <span id="locationStatus" class="topbar-status">Ubicación: buscando...</span>
+      </div>
+
+      <div class="search-shell">
+        <button id="myLocationBtn" class="search-action search-location" type="button" aria-label="Usar mi ubicación">📍</button>
+        <div class="search-input-wrap">
+          <input id="destinationInput" type="text" placeholder="¿A dónde quieres ir?" autocomplete="off" />
+          <ul id="destinationResults" class="results-list hidden"></ul>
+        </div>
+        <button id="calculateRoutesBtn" class="search-action search-route" type="button" aria-label="Buscar ruta">➜</button>
       </div>
 
       <div id="loadingOverlay" class="loading-overlay hidden" aria-live="polite">
@@ -27,34 +35,8 @@
         <span id="loadingText">Cargando...</span>
       </div>
 
-      <details class="panel-section" open>
-        <summary>Ruta</summary>
-        <div class="section-content">
-          <div class="input-row">
-            <input id="originInput" type="text" value="Tu ubicación actual" readonly />
-            <button id="myLocationBtn" class="btn btn-secondary btn-icon" type="button">📍</button>
-          </div>
-
-          <button id="swapRouteBtn" class="swap-btn" type="button">⇅ Intercambiar ruta</button>
-
-          <div class="input-column">
-            <label for="destinationInput">Destino</label>
-            <div class="input-row">
-              <input id="destinationInput" type="text" placeholder="Buscar destino..." />
-              <button id="destinationSearchBtn" class="btn btn-primary">Buscar</button>
-            </div>
-            <ul id="destinationResults" class="results-list hidden"></ul>
-          </div>
-
-          <div class="button-stack">
-            <button id="calculateRoutesBtn" class="btn btn-primary btn-wide">Calcular ruta</button>
-            <button id="clearRoutesBtn" class="btn btn-ghost">Limpiar ruta</button>
-          </div>
-
-          <div id="routesList" class="routes-list"></div>
-        </div>
-      </details>
-    </aside>
+      <div id="routesList" class="routes-list hidden"></div>
+    </header>
 
     <main id="mapContainer">
       <div id="map"></div>
@@ -65,9 +47,6 @@
       <a href="terminos.html">Uso</a>
       <a href="contacto.html">Contacto</a>
     </footer>
-
-    <button id="panelToggleBtn" class="panel-toggle-btn" type="button">Abrir panel</button>
-    <button id="trafficToggleBtn" class="traffic-toggle-btn" type="button">Tráfico</button>
   </div>
 
   <script
