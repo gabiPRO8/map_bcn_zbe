@@ -1,0 +1,19 @@
+{
+  "name": "zbe_routes",
+  "version": "1.0.0",
+  "description": "Mapa de camaras ZBE de Barcelona con rutas urbanas",
+  "main": "app.js",
+  "scripts": {
+    "dev": "http-server . -p 5173 -c-1",
+    "start": "npm run dev",
+    "deploy": "gh-pages -d . --dotfiles"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "http-server": "^14.1.1"
+  }
+}

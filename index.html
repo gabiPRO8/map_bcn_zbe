@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BCN Navigator</title>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <aside id="sidebar" class="custom-scrollbar">
+      <div class="panel-header">
+        <h1>🗺 BCN Navigator</h1>
+        <p>Mapa urbano de Barcelona con rutas y control ZBE</p>
+      </div>
+
+      <div id="loadingOverlay" class="loading-overlay hidden" aria-live="polite">
+        <div class="spinner"></div>
+        <span id="loadingText">Cargando...</span>
+      </div>
+
+      <details class="panel-section" open>
+        <summary>Buscar lugar</summary>
+        <div class="section-content">
+          <div class="input-row">
+            <input id="placeInput" type="text" placeholder="Buscar lugar en Barcelona..." />
+            <button id="placeSearchBtn" class="btn btn-primary">Buscar</button>
+          </div>
+          <ul id="placeResults" class="results-list hidden"></ul>
+
+          <div class="info-box" id="placeInfo">
+            <h3>Lugar seleccionado</h3>
+            <p><strong>Nombre:</strong> <span id="selectedName">-</span></p>
+            <p><strong>Lat:</strong> <span id="selectedLat">-</span></p>
+            <p><strong>Lng:</strong> <span id="selectedLng">-</span></p>
+            <p><strong>Tipo:</strong> <span id="selectedType">-</span></p>
+            <hr />
+            <p><strong>Click en mapa:</strong> <span id="mapClickCoords">-</span></p>
+          </div>
+        </div>
+      </details>
+
+      <details class="panel-section" open>
+        <summary>Calcular ruta</summary>
+        <div class="section-content">
+          <div class="input-column">
+            <label for="originInput">Origen</label>
+            <div class="input-row">
+              <input id="originInput" type="text" placeholder="Buscar origen..." />
+              <button id="originSearchBtn" class="btn btn-secondary">Buscar</button>
+            </div>
+            <ul id="originResults" class="results-list hidden"></ul>
+          </div>
+
+          <div class="input-column">
+            <label for="destinationInput">Destino</label>
+            <div class="input-row">
+              <input id="destinationInput" type="text" placeholder="Buscar destino..." />
+              <button id="destinationSearchBtn" class="btn btn-secondary">Buscar</button>
+            </div>
+            <ul id="destinationResults" class="results-list hidden"></ul>
+          </div>
+
+          <div class="button-stack">
+            <button id="myLocationBtn" class="btn btn-secondary">📍 Mi ubicación</button>
+            <button id="calculateRoutesBtn" class="btn btn-primary btn-wide">CALCULAR RUTAS</button>
+            <button id="clearRoutesBtn" class="btn btn-ghost">Limpiar rutas</button>
+          </div>
+
+          <div id="routesList" class="routes-list"></div>
+        </div>
+      </details>
+
+      <details class="panel-section" open>
+        <summary>Capas y opciones</summary>
+        <div class="section-content">
+          <label class="toggle-row">
+            <input id="avoidZbeCheckbox" type="checkbox" />
+            <span>🚫 Evitar cámaras ZBE</span>
+          </label>
+
+          <label class="toggle-row">
+            <input id="toggleZbeLayer" type="checkbox" checked />
+            <span>Mostrar radares ZBE</span>
+          </label>
+
+          <button id="loadKmlBtn" class="btn btn-secondary btn-wide">📂 Cargar KML radares ZBE</button>
+          <input id="kmlFileInput" type="file" accept=".kml" class="hidden-input" />
+
+          <p class="counter" id="zbeCounter">0 radares ZBE cargados</p>
+          <p class="hint">Usa el control de capas del mapa para alternar entre Mapa normal y Mapa transporte.</p>
+        </div>
+      </details>
+    </aside>
+
+    <main id="mapContainer">
+      <div id="map"></div>
+    </main>
+  </div>
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+  <script src="app.js"></script>
+</body>
+</html>

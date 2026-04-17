@@ -1,0 +1,1319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Mapa de Cámaras ZBE Barcelona 2025</name>
+    <description><![CDATA[Ubicación Cámaras de la ZBE Barcelona en 2025.<br>(zbe-barcelona.com)]]></description>
+    <Style id="icon-1899-0288D1-nodesc-normal">
+      <IconStyle>
+        <color>ffd18802</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-1899-0288D1-nodesc-highlight">
+      <IconStyle>
+        <color>ffd18802</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-1899-0288D1-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1899-0288D1-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1899-0288D1-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-1899-558B2F-nodesc-normal">
+      <IconStyle>
+        <color>ff2f8b55</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-1899-558B2F-nodesc-highlight">
+      <IconStyle>
+        <color>ff2f8b55</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-1899-558B2F-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1899-558B2F-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1899-558B2F-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-1899-C2185B-nodesc-normal">
+      <IconStyle>
+        <color>ff5b18c2</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-1899-C2185B-nodesc-highlight">
+      <IconStyle>
+        <color>ff5b18c2</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-1899-C2185B-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1899-C2185B-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1899-C2185B-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Folder>
+      <name>Cámaras ZBE 2024</name>
+      <Placemark>
+        <name>Avinguda Meridiana, 605</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1884312,41.4495813,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Avinguda Meridiana, 694</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1885259,41.4490594,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Gran Via de les Corts Catalanes, 186</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1396152,41.3675257,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Gran Via de les Corts Catalanes, 181</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1394188,41.3680662,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Via Augusta, 323</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1236962,41.3995582,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Via Augusta, 324</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1250322,41.3991809,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Avinguda Diagonal, 687</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1068387,41.3827943,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Avinguda Diagonal, 712</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.10673,41.3832306,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Avinguda Diagonal, 716</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.10673,41.3832306,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Av. de Pedralbes, 51</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.114556,41.3932581,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Passeig de Fabra i Puig, 181</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1775149,41.4301467,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Passeig de Fabra i Puig, 222</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1775254,41.4303972,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Gran Via de les Corts Catalanes, 794</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1823072,41.3998896,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Gran Via de les Corts Catalanes, 747</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1804894,41.3987828,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Avinguda Diagonal, 203</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1904271,41.4039915,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Avinguda Diagonal, 242</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1905139,41.4043596,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Carrer de Numància, 47</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1386476,41.3835763,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Carrer de Berlín, 34</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1387515,41.3830253,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Passeig Josep Carner, 27</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1768892,41.3745918,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Av. del Paral·lel, 2</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1759067,41.3744459,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ronda del General Mitre, 82</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1337446,41.3986247,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ronda del General Mitre, 93</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1341491,41.3997255,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Carrer de Ganduxer, 88</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1344445,41.3989933,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Carrer de Ganduxer, 90</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1343405,41.3990083,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Plaça del Taxi</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.180382,41.4171009,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Passeig de Maragall, 54</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1804207,41.4163038,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name><![CDATA[C/ d'Aragó, 185]]></name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1586857,41.3875363,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Gran Via de les Corts Catalanes, 601</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1678127,41.389263,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Gran Via de les Corts Catalanes, 622</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1681271,41.3890564,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Carrer Gran de Gràcia, 249</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1504856,41.405711,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Avinguda de la Riera de Cassoles, 67</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1499339,41.4056371,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Carrer de la Marina, 201</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1790138,41.4007872,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Av. del Paral·lel, 184</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1534741,41.3750674,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Av. del Paral·lel, 185</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1538744,41.3748103,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Via Laietana, 41</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1754981,41.386332,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Via Laietana, 46</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.175619,41.3863885,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Carrer de las Navas de Tolosa, 355</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1831434,41.4181139,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Carrer de Concepción Arenal, 1</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1836979,41.4184287,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Carrer de Sant Antoni Maria Claret, 412</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1839002,41.4182799,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name><![CDATA[Passeig de la Vall d'Hebron, 119]]></name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1433849,41.4275738,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name><![CDATA[Passeig de la Vall d'Hebron, 160]]></name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1438665,41.4274626,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>La Catalana - Salida 26</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.2214166,41.4218697,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hospitalet ZBE</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.0959721,41.3767244,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Salida 26</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.2248913,41.4183134,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Salida 25</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.2254688,41.4149774,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Salida15</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.0922824,41.3537466,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Salida 5</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1452574,41.4314821,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Avinguda America</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1146726,41.3495701,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Parc de la Solidaritat Esplugues ZBE</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.0941238,41.3723901,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Sant Mateu</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.0975749,41.3780966,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Salida 12</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.0946411,41.3738518,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Salida 13</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.0937439,41.3695037,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>AV. Electricitat esq Pere Pelegrí ZBE</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.0992682,41.368594,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Trav. Industrial - Av Europa ZBE</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1129426,41.3573601,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Calle Mas, 61</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1210136,41.3722417,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Santa Eulalia</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1314439,41.3682798,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Creu Roja - Carretera Collblanc</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1157718,41.3758092,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hospitalet</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1142607,41.3587868,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Josep Tarradellas 260</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.0938234,41.3618356,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Av. Joan Carles I, 40</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1325015,41.3498952,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>P. Santa Coloma ZBE 2023 Activo</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.2003466,41.4486725,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Potosí ZBE Nueva 2023</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.2053911,41.4434833,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.2076501,41.434152,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Av Vallcarca</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1462097,41.4109384,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Segre</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1922388,41.4341679,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Mallorca - Villaroel</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1529769,41.3866307,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Balmes - Eda Universidad 2024</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1661405,41.3866932,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Travessera / Vallespir</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1330431,41.3855875,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Crta Hospitalet / C/ Energia ZBE</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.092409,41.3581252,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Av. Meridiana, 611</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1885802,41.4502418,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Pz. Europa 5</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1245554,41.3560511,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>C / Energía</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.0922364,41.357781,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Gran Via 151</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1196229,41.3526271,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Gran Via 153</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1192356,41.3520969,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Miguel Hernandez 95</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1195814,41.3521357,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Vall d´Hebron 245</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1581141,41.4396603,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Salvador Espriu 64</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1222003,41.3540331,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Can Trias 4</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1216088,41.3548133,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Calle 2</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1353509,41.3444259,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Av Parc Logistic</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.135013,41.3442084,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Diagonal</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1258349,41.3878431,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ronda Universidad 2024</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1665392,41.3865996,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Josep Carner 38 ZBE Dir. Montjuic</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1755199,41.3731942,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Ctra. Esplugues 14</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.0969816,41.3657664,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Carretera del Mig / Arquímedes ZBE</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.0951964,41.3496935,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Potosí</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.2054037,41.4434155,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Rambla de Badal, 1</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1350032,41.3651965,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Balmes / Travessera</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1517615,41.39772,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Rambla de Badal, 1(2)</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.135434,41.3653075,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Segre / C Sant Adrià</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1922903,41.4338491,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Gran Via / C Física</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1272148,41.3582091,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Segre / C Sant Adrià</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1924324,41.4339838,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.127303,41.3847245,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1340015,41.3957436,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1038586,41.384311,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1113452,41.408974,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.138418,41.4221391,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1257852,41.3879532,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1868958,41.4153182,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1762672,41.4254997,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1538702,41.3960334,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1652138,41.4095641,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.156873,41.4395636,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1970957,41.4006373,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1855797,41.405992,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1495033,41.3958717,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1630081,41.3992344,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1664041,41.4000908,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1869109,41.4103905,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1664344,41.3932724,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1480886,41.4076739,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1511252,41.4080807,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1397289,41.3882222,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1732028,41.4000528,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1531838,41.3985468,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1672796,41.4127932,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1821458,41.3814227,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1837225,41.3830479,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1621576,41.3794339,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.2022707,41.4088673,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1337517,41.4067613,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023
+</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1336738,41.4061439,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1180076,41.3758714,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.121776,41.3757049,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1232763,41.3756711,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1837512,41.3892279,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE 2023</name>
+        <styleUrl>#icon-1899-558B2F-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.1819854,41.3809062,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE Badalona </name>
+        <styleUrl>#icon-1899-C2185B-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.2277485,41.4574788,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE Badalona </name>
+        <styleUrl>#icon-1899-C2185B-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.2231343,41.4567083,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ZBE Badalona</name>
+        <styleUrl>#icon-1899-C2185B-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.2275655,41.4535651,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Carrer Molí</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            2.0956195,41.3754315,0
+          </coordinates>
+        </Point>
+      </Placemark>
+    </Folder>
+    <Folder>
+      <name>Capa sin nombre</name>
+    </Folder>
+  </Document>
+</kml>
