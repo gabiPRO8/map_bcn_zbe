@@ -2,9 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>BCN Navigator</title>
-
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -15,32 +14,109 @@
 </head>
 <body>
   <div id="app">
-    <header id="sidebar" class="custom-scrollbar topbar">
-      <div class="topbar-brand">
-        <span class="topbar-title">BCN Navigator</span>
-        <span id="locationStatus" class="topbar-status">Ubicación: buscando...</span>
-      </div>
-
-      <div class="search-shell">
-        <button id="myLocationBtn" class="search-action search-location" type="button" aria-label="Usar mi ubicación">📍</button>
-        <div class="search-input-wrap">
-          <input id="destinationInput" type="text" placeholder="¿A dónde quieres ir?" autocomplete="off" />
-          <ul id="destinationResults" class="results-list hidden"></ul>
-        </div>
-        <button id="calculateRoutesBtn" class="search-action search-route" type="button" aria-label="Buscar ruta">➜</button>
-      </div>
-
-      <div id="loadingOverlay" class="loading-overlay hidden" aria-live="polite">
-        <div class="spinner"></div>
-        <span id="loadingText">Cargando...</span>
-      </div>
-
-      <div id="routesList" class="routes-list hidden"></div>
-    </header>
-
     <main id="mapContainer">
       <div id="map"></div>
+
+      <div id="floatingSearch" class="floating-search" role="button" aria-label="Abrir búsqueda" tabindex="0">
+        <span class="search-icon">🔍</span>
+        <span class="search-placeholder">Search here</span>
+        <span class="search-mic">🎤</span>
+      </div>
+
+      <button id="myLocationFab" class="my-location-fab" type="button" aria-label="Centrar en mi ubicación">⌖</button>
+
+      <div id="statusPill" class="status-pill">Ubicación: buscando...</div>
+
+      <section id="placeSheet" class="bottom-sheet place-sheet hidden" aria-live="polite">
+        <div class="sheet-handle"></div>
+        <div class="place-sheet-content">
+          <h2 id="placeTitle">Lugar</h2>
+          <p id="placeSubtitle">Dirección</p>
+          <div class="sheet-actions">
+            <button id="openDirectionsBtn" class="btn btn-primary" type="button">🧭 Directions</button>
+            <button id="savePlaceBtn" class="btn" type="button">⭐ Guardar</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="routeSheet" class="bottom-sheet route-sheet hidden" aria-live="polite">
+        <div id="routeSheetHandle" class="sheet-handle"></div>
+        <div class="route-sheet-content">
+          <div class="route-head">
+            <div class="route-points">
+              <div class="route-point-row">
+                <span class="point-icon point-origin"></span>
+                <div>
+                  <p class="point-label">Origen</p>
+                  <p id="routeOriginText" class="point-value">Your location</p>
+                </div>
+              </div>
+              <div class="route-point-row">
+                <span class="point-icon point-destination"></span>
+                <div>
+                  <p class="point-label">Destino</p>
+                  <p id="routeDestinationText" class="point-value">Selecciona un destino</p>
+                </div>
+              </div>
+            </div>
+            <button id="swapRouteBtn" class="icon-btn" type="button" aria-label="Intercambiar origen y destino">⇅</button>
+          </div>
+
+          <label class="checkbox-row">
+            <input id="avoidCamerasToggle" type="checkbox" checked />
+            Evitar cámaras ZBE
+          </label>
+
+          <button id="calculateRoutesBtn" class="btn btn-primary btn-wide" type="button">CALCULAR RUTAS</button>
+
+          <div id="routeLoading" class="route-loading hidden">
+            <span class="spinner"></span>
+            Calculando rutas...
+          </div>
+
+          <div id="routesList" class="routes-list"></div>
+        </div>
+      </section>
+
+      <section id="searchSheet" class="search-sheet hidden" aria-live="polite">
+        <div class="search-sheet-top">
+          <button id="closeSearchBtn" class="back-btn" type="button">&lt; Atrás</button>
+          <input id="searchInput" type="text" placeholder="Search here" autocomplete="off" />
+        </div>
+
+        <div class="quick-links">
+          <button id="homeQuickBtn" class="quick-chip" type="button">🏠 Casa</button>
+          <button id="workQuickBtn" class="quick-chip" type="button">💼 Trabajo</button>
+        </div>
+
+        <div class="search-section">
+          <h3>Recientes</h3>
+          <ul id="recentList" class="search-list"></ul>
+        </div>
+
+        <div class="search-section">
+          <h3>Sugerencias</h3>
+          <ul id="suggestionsList" class="search-list"></ul>
+        </div>
+      </section>
     </main>
+
+    <aside id="desktopPanel" class="desktop-panel">
+      <h1>BCN Navigator</h1>
+      <p id="desktopStatus" class="desktop-status">Ubicación: buscando...</p>
+      <div class="desktop-search-row">
+        <input id="desktopDestinationInput" type="text" placeholder="Destino" autocomplete="off" />
+        <button id="desktopSearchBtn" class="btn btn-primary" type="button">Buscar</button>
+      </div>
+      <ul id="desktopSuggestions" class="search-list hidden"></ul>
+      <button id="desktopLocateBtn" class="btn" type="button">Usar mi ubicación</button>
+      <label class="checkbox-row">
+        <input id="desktopAvoidToggle" type="checkbox" checked />
+        Evitar cámaras ZBE
+      </label>
+      <button id="desktopCalculateBtn" class="btn btn-primary btn-wide" type="button">CALCULAR RUTAS</button>
+      <div id="desktopRoutes" class="routes-list"></div>
+    </aside>
   </div>
 
   <script
