@@ -58,6 +58,16 @@ body {
   font-size: 0.9rem;
 }
 
+.location-status {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(74, 144, 226, 0.35);
+  border-radius: 10px;
+  background: rgba(12, 18, 40, 0.72);
+  color: #cfe6ff;
+  font-size: 0.84rem;
+}
+
 .panel-section {
   background: var(--bg-panel-2);
   border: 1px solid var(--border);
@@ -396,6 +406,110 @@ input[type="text"]:focus {
   border: 2px solid #eaf4ff;
   box-shadow: 0 0 0 10px rgba(74, 144, 226, 0.2);
   animation: pulse 1.8s infinite ease-in-out;
+}
+
+.panel-toggle-btn {
+  display: none;
+  position: fixed;
+  right: 16px;
+  top: 16px;
+  z-index: 1200;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(10, 14, 28, 0.9);
+  color: var(--text-main);
+  padding: 10px 14px;
+  font-weight: 700;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+}
+
+@media (max-width: 900px) {
+  #app {
+    display: block;
+    height: 100dvh;
+  }
+
+  #mapContainer {
+    width: 100%;
+    height: 100dvh;
+  }
+
+  #sidebar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+    min-width: 0;
+    height: min(78dvh, 760px);
+    max-height: 78dvh;
+    border-right: none;
+    border-top: 1px solid #28345a;
+    border-radius: 22px 22px 0 0;
+    padding: 12px 12px calc(16px + env(safe-area-inset-bottom));
+    transform: translateY(calc(100% - 92px));
+    transition: transform 0.28s ease;
+    z-index: 1150;
+    box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.42);
+  }
+
+  #sidebar.sidebar-open {
+    transform: translateY(0);
+  }
+
+  #sidebar::before {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 5px;
+    margin: 2px auto 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  .panel-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .panel-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .panel-section summary,
+  .btn,
+  input[type="text"] {
+    min-height: 46px;
+  }
+
+  .btn,
+  input[type="text"] {
+    font-size: 16px;
+  }
+
+  .input-row {
+    flex-direction: column;
+  }
+
+  .input-row .btn {
+    width: 100%;
+  }
+
+  .button-stack {
+    position: sticky;
+    bottom: 0;
+    padding-top: 10px;
+    background: linear-gradient(180deg, rgba(22, 33, 62, 0) 0%, rgba(22, 33, 62, 0.92) 24%);
+  }
+
+  .routes-list {
+    max-height: 26vh;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
 }
 
 @keyframes spin {

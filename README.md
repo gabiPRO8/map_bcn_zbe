@@ -16,6 +16,12 @@ npm run dev
 
 Si PowerShell muestra `npm no se reconoce`, cierra y vuelve a abrir la terminal de VS Code para refrescar la variable `PATH`.
 
+## Modo móvil
+
+- En pantallas pequeñas el panel pasa a ser una hoja inferior deslizable.
+- El botón `Mi ubicación` activa seguimiento continuo de tu posición.
+- La geolocalización solo funciona en contextos seguros, como GitHub Pages con `https`.
+
 El servicio quedara en:
 
 - http://localhost:5173

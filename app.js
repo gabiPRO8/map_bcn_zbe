@@ -15,6 +15,12 @@ let originPoint = null;
 let destinationPoint = null;
 let routesData = [];
 let activeRouteId = null;
+let locationWatchId = null;
+let locationTrackingActive = false;
+let lastKnownLocation = null;
+let sidebarOpen = true;
+let mobileLayout = false;
+let firstLocationFix = false;
 
 let normalLayer;
 let transportLayer;
@@ -47,11 +53,16 @@ const els = {
   loadKmlBtn: document.getElementById("loadKmlBtn"),
   kmlFileInput: document.getElementById("kmlFileInput"),
   zbeCounter: document.getElementById("zbeCounter"),
+  locationStatus: document.getElementById("locationStatus"),
+  sidebar: document.getElementById("sidebar"),
+  panelToggleBtn: document.getElementById("panelToggleBtn"),
 
   myLocationBtn: document.getElementById("myLocationBtn"),
   loadingOverlay: document.getElementById("loadingOverlay"),
   loadingText: document.getElementById("loadingText"),
 };
+
+const mobileQuery = window.matchMedia("(max-width: 900px)");
 
 function initMap() {
   map = L.map("map", {
@@ -106,6 +117,38 @@ function setLoading(isLoading, text = "Cargando...") {
     els.loadingOverlay.classList.remove("hidden");
   } else {
     els.loadingOverlay.classList.add("hidden");
+  }
+}
+
+function updateLocationStatus(text) {
+  if (els.locationStatus) {
+    els.locationStatus.textContent = text;
+  }
+}
+
+function setSidebarOpen(open) {
+  sidebarOpen = open;
+  els.sidebar.classList.toggle("sidebar-open", open);
+
+  if (els.panelToggleBtn) {
+    els.panelToggleBtn.textContent = open ? "Cerrar panel" : "Abrir panel";
+  }
+
+  window.setTimeout(() => {
+    if (map) {
+      map.invalidateSize();
+    }
+  }, 320);
+}
+
+function syncMobileLayout() {
+  mobileLayout = mobileQuery.matches;
+  document.body.classList.toggle("mobile-layout", mobileLayout);
+
+  if (mobileLayout) {
+    setSidebarOpen(sidebarOpen);
+  } else {
+    setSidebarOpen(true);
   }
 }
 
@@ -497,6 +540,126 @@ function placeRoutePointMarker(type, point) {
   }
 }
 
+function stopLiveLocationTracking() {
+  if (locationWatchId !== null) {
+    navigator.geolocation.clearWatch(locationWatchId);
+    locationWatchId = null;
+  }
+
+  locationTrackingActive = false;
+  firstLocationFix = false;
+
+  if (els.myLocationBtn) {
+    els.myLocationBtn.textContent = "📍 Mi ubicación";
+  }
+
+  updateLocationStatus("Ubicación en vivo: desactivada");
+}
+
+function updateLiveLocation(position) {
+  const { latitude, longitude, accuracy } = position.coords;
+
+  lastKnownLocation = {
+    lat: latitude,
+    lng: longitude,
+    accuracy,
+  };
+
+  originPoint = {
+    name: "Mi ubicación actual",
+    lat: latitude,
+    lng: longitude,
+  };
+
+  els.originInput.value = "Mi ubicación actual";
+
+  if (myLocationMarker) {
+    myLocationMarker.setLatLng([latitude, longitude]);
+  } else {
+    myLocationMarker = L.marker([latitude, longitude], {
+      icon: createDivIcon("my-location-dot"),
+    }).addTo(map);
+  }
+
+  myLocationMarker.bindPopup("Tu ubicación actual");
+
+  if (originMarker) {
+    map.removeLayer(originMarker);
+    originMarker = null;
+  }
+
+  const shouldCenter = !firstLocationFix || mobileLayout;
+  if (shouldCenter) {
+    map.setView([latitude, longitude], mobileLayout ? 16 : 15);
+  }
+
+  firstLocationFix = true;
+
+  updateLocationStatus(`Ubicación en vivo: ${latitude.toFixed(5)}, ${longitude.toFixed(5)} ±${Math.round(accuracy)} m`);
+}
+
+function startLiveLocationTracking() {
+  if (!navigator.geolocation) {
+    alert("Tu navegador no soporta geolocalizacion");
+    return;
+  }
+
+  if (locationWatchId !== null) {
+    return;
+  }
+
+  locationTrackingActive = true;
+
+  if (els.myLocationBtn) {
+    els.myLocationBtn.textContent = "⏸ Parar ubicación";
+  }
+
+  updateLocationStatus("Ubicación en vivo: buscando señal...");
+  setLoading(true, "Obteniendo ubicación...");
+
+  locationWatchId = navigator.geolocation.watchPosition(
+    (position) => {
+      updateLiveLocation(position);
+      setLoading(false);
+    },
+    (error) => {
+      console.error(error);
+      setLoading(false);
+      stopLiveLocationTracking();
+      alert("No se pudo obtener tu ubicación");
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 12000,
+      maximumAge: 0,
+    }
+  );
+}
+
+function toggleLiveLocationTracking() {
+  if (locationTrackingActive) {
+    stopLiveLocationTracking();
+    return;
+  }
+
+  startLiveLocationTracking();
+}
+
+async function autoStartLiveLocationIfAllowed() {
+  if (!navigator.permissions?.query || !navigator.geolocation) {
+    return;
+  }
+
+  try {
+    const permission = await navigator.permissions.query({ name: "geolocation" });
+    if (permission.state === "granted") {
+      startLiveLocationTracking();
+    }
+  } catch (error) {
+    console.warn("No se pudo comprobar permiso de geolocalizacion", error);
+  }
+}
+
 function getRouteRanking() {
   const data = [...routesData];
 
@@ -828,50 +991,6 @@ async function preloadDefaultKml() {
   }
 }
 
-function locateMe() {
-  if (!navigator.geolocation) {
-    alert("Tu navegador no soporta geolocalizacion");
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const { latitude, longitude } = position.coords;
-
-      if (myLocationMarker) {
-        map.removeLayer(myLocationMarker);
-      }
-
-      myLocationMarker = L.marker([latitude, longitude], {
-        icon: createDivIcon("my-location-dot"),
-      })
-        .addTo(map)
-        .bindPopup("Tu ubicacion actual")
-        .openPopup();
-
-      originPoint = {
-        name: "Mi ubicacion actual",
-        lat: latitude,
-        lng: longitude,
-      };
-
-      els.originInput.value = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
-      placeRoutePointMarker("origin", originPoint);
-
-      map.setView([latitude, longitude], 15);
-    },
-    (error) => {
-      console.error(error);
-      alert("No se pudo obtener tu ubicacion");
-    },
-    {
-      enableHighAccuracy: true,
-      timeout: 12000,
-      maximumAge: 0,
-    }
-  );
-}
-
 function bindEvents() {
   attachSearchEvents(els.placeInput, els.placeSearchBtn, els.placeResults, (item) => {
     placeSearchMarker(item);
@@ -966,10 +1085,20 @@ function bindEvents() {
     }
   });
 
-  els.myLocationBtn.addEventListener("click", locateMe);
+  els.myLocationBtn.addEventListener("click", toggleLiveLocationTracking);
+
+  if (els.panelToggleBtn) {
+    els.panelToggleBtn.addEventListener("click", () => {
+      setSidebarOpen(!sidebarOpen);
+    });
+  }
+
+  mobileQuery.addEventListener("change", syncMobileLayout);
 }
 
 initMap();
+syncMobileLayout();
 bindEvents();
 updateZbeCounter();
 preloadDefaultKml();
+autoStartLiveLocationIfAllowed();

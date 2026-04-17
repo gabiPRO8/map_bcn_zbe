@@ -19,6 +19,7 @@
       <div class="panel-header">
         <h1>🗺 BCN Navigator</h1>
         <p>Mapa urbano de Barcelona con rutas y control ZBE</p>
+        <div id="locationStatus" class="location-status">Ubicación en vivo: desactivada</div>
       </div>
 
       <div id="loadingOverlay" class="loading-overlay hidden" aria-live="polite">
@@ -103,6 +104,8 @@
     <main id="mapContainer">
       <div id="map"></div>
     </main>
+
+    <button id="panelToggleBtn" class="panel-toggle-btn" type="button">Abrir panel</button>
   </div>
 
   <script
