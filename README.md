@@ -14,6 +14,8 @@ npm install
 npm run dev
 ```
 
+Si PowerShell muestra `npm no se reconoce`, cierra y vuelve a abrir la terminal de VS Code para refrescar la variable `PATH`.
+
 El servicio quedara en:
 
 - http://localhost:5173
